@@ -1,4 +1,11 @@
 class Vagon{
+	method esLiviano(){
+		return self.pesoMaximo()  >2500
+	}
+	method pesoMaximo(){}
+}
+
+class VagonLiviano inherits Vagon{
 	var ancho = 0
 	var largo = 0 
 	var carga = false
@@ -32,4 +39,10 @@ class Vagon{
 	}
 	
 }
+class VagondeCarga inherits Vagon{// BUSCAR COMMITS
+	
+}
+class VagonDePasajeros inherits Vagon{}
+
+
 	

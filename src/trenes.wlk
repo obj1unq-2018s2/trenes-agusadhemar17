@@ -5,6 +5,8 @@ import vagones.*
 class Formacion{
 	var vagones = []
 	var locomotoras = []
+	//var property esDeCorta = true
+	
 	
 	method cantVagonesLivianos(){
 		return vagones.count({vagon => vagon.pesoMax()<2500})
@@ -43,9 +45,27 @@ class Formacion{
 	}
 	method esCompleja(){
 		return (vagones.size()+locomotoras.size()) >20 or  (self.pesoTotalLocomotoras()+self.pesoTotalVagones()) > 10000
-	}
+	}//buscarLocomotora(tren)
 	
-	buscarLocomotora(tren)
+	method tieneMuchosBanios(){//IMPLEMENTAR
+		return vagones.size()>0 
+	}
+ 	method estaBienArmada() {
+			return self.puedeMoverse() 
+	}
+	/*method cantVagonesLivianos(){
+		return vagones.count({vagon=> vagon.peso()>2500})
+	} */
 }
 	
+class FormacionDeLargaDistancia inherits Formacion {
+	override method estaBienArmada() {
+		return super() and self.tieneMuchosBanios()
+	}	
+}
 	
+class FormacionDeCortaDistancia inherits Formacion {
+		override method estaBienArmada() {
+			return super() and !self.esCompleja()
+	}
+}	

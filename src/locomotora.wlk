@@ -1,4 +1,4 @@
-class Locomotora() {
+class Locomotora {
 	var peso
 	
 	method peso(){
@@ -6,7 +6,7 @@ class Locomotora() {
 	}
 	
 	method pesoMaximo(){
-		
+		return peso
 	} 
 
 	method velocidadMaxima(){

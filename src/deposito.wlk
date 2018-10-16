@@ -10,7 +10,7 @@ class Deposito {
 	method vagonesMasPesados(){
 		return trenes.map({tren=>tren.vagonMasPesado()}) 
 	}	
-	method necesitoConductoresperimentado(){
+	method necesitoConductorExperimentado(){
 		return 	trenes.any({tren=>tren.esCompleja()})
 	}
 
