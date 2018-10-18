@@ -1,0 +1,57 @@
+import trenes.*
+import vagones.*
+import locomotora.*
+import deposito.*
+
+describe " trenes" {
+
+	var vagon1 = new VagonDePasajeros(largo = 4, ancho = 2.5, cantBanios = 7)
+	var vagon2 = new VagonDePasajeros(largo = 4.5, ancho = 1.5, cantBanios = 5)
+	var vagon3 = new VagonDePasajeros(largo = 3, ancho = 1, cantBanios = 3)
+	var vagon4 = new VagonDeCarga(largo = 10, ancho = 2.5)
+	var vagon5 = new VagonDeCarga(largo = 8, ancho = 1.5)
+	var vagon6 = new VagonDeCarga(largo = 13, ancho = 1)
+	var locomotora1 = new Locomotora(peso = 1000, pesoMax = 12000, velocidadMax = 80)
+	var locomotora2 = new Locomotora(peso = 1400, pesoMax = 13000, velocidadMax = 60)
+	var locomotora3 = new Locomotora(peso = 1250, pesoMax = 12440, velocidadMax = 90)
+	var for1 = new Formacion(locomotoras = [ locomotora1, locomotora2 ], vagones = [ vagon1, vagon4, vagon3 ])
+	var for2 = new Formacion(locomotoras = [ locomotora1 ], vagones = [ vagon3, vagon1, vagon5 ])
+	var for3 = new Formacion(locomotoras = [ locomotora2 ], vagones = [ vagon1, vagon2, vagon3 ])
+	var for4 = new Formacion(locomotoras = [ locomotora3 ], vagones = [ vagon1, vagon2, vagon6 ])
+	//var locomotora = [ locomotora1, locomotora3 ]
+	//var deposito1 = new Deposito(trenes = [ for1, for2, for3 ], locomotoras = locomotoras)
+
+	test "test1 cantidad de vagones livianos" {
+		assert.equals(1, for1.cantVagonesLivianos())
+	}
+
+	test "test2 velocidad maxima" {
+		assert.equals(60, for1.velocidadMax())
+		assert.equals(80, for2.velocidadMax())
+		assert.equals(60, for3.velocidadMax())
+		assert.equals(90, for4.velocidadMax())
+	}
+
+	test "test3 formaciones eficientes" {
+		assert.that(for1.esEficiente())
+		assert.that(for2.esEficiente())
+		assert.that(for3.esEficiente())
+		assert.that(for4.esEficiente())
+	}
+
+	test "test4 formaciones pueden moverse" {
+		assert.that(for1.puedeMoverse())
+		assert.that(for2.puedeMoverse())
+		assert.that(for3.puedeMoverse())
+		assert.that(for4.puedeMoverse())
+	}
+
+	test "test5 formaciones cuantos k faltan para moverme" {
+		assert.equals(0, for1.cuantosKilosDeEmpujeFaltan())
+		assert.equals(0, for2.cuantosKilosDeEmpujeFaltan())
+		assert.equals(0, for3.cuantosKilosDeEmpujeFaltan())
+		assert.equals(0, for4.cuantosKilosDeEmpujeFaltan())
+	}
+
+	
+}

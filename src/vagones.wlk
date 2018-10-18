@@ -1,48 +1,49 @@
-class Vagon{
-	method esLiviano(){
-		return self.pesoMaximo()  >2500
+class Vagon {
+
+	var property ancho = 0
+	var property largo = 0
+	var property maximaCarga = 0
+
+	method esLiviano() {
+		return self.pesoMax() > 2500
 	}
-	method pesoMaximo(){}
+
+	method llevaCarga() {
+		return false
+	}
+
+	method pesoMax() {
+		return 0
+	}
+
 }
 
-class VagonLiviano inherits Vagon{
-	var ancho = 0
-	var largo = 0 
-	var carga = false
-	var maximaCarga = 0
-	
-	method largo(){
-		return largo
-	}
-	method ancho(){
-		return ancho
-	}
-	method cantidadPasajeros(){
-		return if (ancho <= 2.5){
-					largo * 8
-		}else{ largo*10}		
-	}
-	
-	method llevaCarga(){
-		return carga
-	}
-	method cargaMax(){
-		return maximaCarga
-	}
-	
-	method pesoMax (){
-		return if (self.llevaCarga()){
-					self.cantidadPasajeros() * 80
-				}else{
-					maximaCarga + 160
-				}
-	}
-	
-}
-class VagondeCarga inherits Vagon{// BUSCAR COMMITS
-	
-}
-class VagonDePasajeros inherits Vagon{}
+class VagonDeCarga inherits Vagon {
 
+	override method llevaCarga() {
+		return true
+	}
 
+	override method pesoMax() {
+		return maximaCarga + 160
+	}
+
+}
+
+class VagonDePasajeros inherits Vagon {
+	var property cantBanios 
+	method cantidadPasajeros() {
+		return if (ancho <= 2.5) {
+			largo * 8
+		} else {
+			largo * 10
+		}
+	}
+
+	override method pesoMax() {
+		return self.cantidadPasajeros() * 80
+	}
 	
+
+}
+

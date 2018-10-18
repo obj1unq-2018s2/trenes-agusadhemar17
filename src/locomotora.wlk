@@ -1,18 +1,10 @@
 class Locomotora {
-	var peso
+	var property peso
+	var property pesoMax
+	var property velocidadMax
 	
-	method peso(){
-		return peso
-	}
 	
-	method pesoMaximo(){
-		return peso
-	} 
-
-	method velocidadMaxima(){
-		
-	}
 	method arrastreUtil() {
-		return self.pesoMaximo() - self.peso()
+		return self.pesoMax() - self.peso()
 	}
 }

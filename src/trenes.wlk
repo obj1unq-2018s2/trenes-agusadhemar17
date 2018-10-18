@@ -9,15 +9,15 @@ class Formacion{
 	
 	
 	method cantVagonesLivianos(){
-		return vagones.count({vagon => vagon.pesoMax()<2500})
+		return vagones.count({vagon => vagon.esLiviano()})
 	}
 	
 	method velocidadMax(){
-		return locomotoras.min({locomotora=>locomotora.velocidadMaxima()})
+		return (locomotoras.min({locomotora=>locomotora.velocidadMax()})).velocidadMax()
 	} 
 	
 	method esEficiente(){
-		return locomotoras.all({locomotora=>locomotora.arrastreUtil()<= locomotora.peso()*5})
+		return locomotoras.all({locomotora=>locomotora.arrastreUtil()>= locomotora.peso()*5})
 	}
 	method puedeMoverse(){
 		return self.arrastreUtilTotal() >= self.pesoTotalVagones()
