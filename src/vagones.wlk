@@ -31,7 +31,8 @@ class VagonDeCarga inherits Vagon {
 }
 
 class VagonDePasajeros inherits Vagon {
-	var property cantBanios 
+	var  cantBanios 
+	
 	method cantidadPasajeros() {
 		return if (ancho <= 2.5) {
 			largo * 8
@@ -44,6 +45,10 @@ class VagonDePasajeros inherits Vagon {
 		return self.cantidadPasajeros() * 80
 	}
 	
+	method cantBaniosSuficientes(){
+		return cantBanios == (self.cantidadPasajeros()/50).roundUp()
+		
+	}
 
 }
 

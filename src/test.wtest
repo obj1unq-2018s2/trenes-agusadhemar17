@@ -7,7 +7,7 @@ describe " trenes" {
 
 	var vagon1 = new VagonDePasajeros(largo = 4, ancho = 2.5, cantBanios = 7)
 	var vagon2 = new VagonDePasajeros(largo = 4.5, ancho = 1.5, cantBanios = 5)
-	var vagon3 = new VagonDePasajeros(largo = 3, ancho = 1, cantBanios = 3)
+	var vagon3 = new VagonDePasajeros(largo = 3, ancho = 1, cantBanios = 1)
 	var vagon4 = new VagonDeCarga(largo = 10, ancho = 2.5)
 	var vagon5 = new VagonDeCarga(largo = 8, ancho = 1.5)
 	var vagon6 = new VagonDeCarga(largo = 13, ancho = 1)
@@ -18,9 +18,13 @@ describe " trenes" {
 	var for2 = new Formacion(locomotoras = [ locomotora1 ], vagones = [ vagon3, vagon1, vagon5 ])
 	var for3 = new Formacion(locomotoras = [ locomotora2 ], vagones = [ vagon1, vagon2, vagon3 ])
 	var for4 = new Formacion(locomotoras = [ locomotora3 ], vagones = [ vagon1, vagon2, vagon6 ])
-	//var locomotora = [ locomotora1, locomotora3 ]
-	//var deposito1 = new Deposito(trenes = [ for1, for2, for3 ], locomotoras = locomotoras)
-
+	var for5 = new Formacion(locomotoras = [ locomotora3 ], vagones = [ vagon2, vagon6 ])
+	var for6 = new FormacionDeCortaDistancia(locomotoras = [ locomotora3 ], vagones = [ vagon2, vagon6 ])
+	var for7 = new Formacion(locomotoras = [ locomotora1 ], vagones = [ vagon4, vagon3, vagon1, vagon5, vagon2, vagon6, vagon4, vagon3, vagon1, vagon5, vagon2, vagon6 ])
+	var deposito1 = new Deposito(trenes = [ for1, for2 ], locomotoras = [ locomotora1, locomotora2 ])
+	var deposito2 = new Deposito(trenes = [ for3 ], locomotoras = [ locomotora1, locomotora3 ])
+	var deposito3 = new Deposito(trenes = [ for5, for2, for3 ], locomotoras = [ locomotora2 ])
+	
 	test "test1 cantidad de vagones livianos" {
 		assert.equals(1, for1.cantVagonesLivianos())
 	}
@@ -44,6 +48,7 @@ describe " trenes" {
 		assert.that(for2.puedeMoverse())
 		assert.that(for3.puedeMoverse())
 		assert.that(for4.puedeMoverse())
+		assert.notThat(for7.puedeMoverse())
 	}
 
 	test "test5 formaciones cuantos k faltan para moverme" {
@@ -53,5 +58,32 @@ describe " trenes" {
 		assert.equals(0, for4.cuantosKilosDeEmpujeFaltan())
 	}
 
+	test "baños suficientes" {
+		assert.notThat(vagon1.cantBaniosSuficientes())
+		assert.notThat(vagon2.cantBaniosSuficientes())
+		assert.that(vagon3.cantBaniosSuficientes())
+	}
+
+	test "vagon mas pesado" {
+		assert.equals(#{ vagon2 }, deposito2.vagonesMasPesados())
+		assert.equals(#{ vagon2, vagon1 }, deposito3.vagonesMasPesados())
+	}
+
+	test "necesita conductor experimentado" {
+		assert.notThat(deposito1.necesitoConductorExperimentado())
+	}
+
+	test"esta bien armada" {
+		assert.that(for1.estaBienArmada())
+		assert.that(for2.estaBienArmada())
+		assert.that(for3.estaBienArmada())
+		assert.that(for4.estaBienArmada())
+	}
+
 	
+	test "Velocidades Maximas" {
+		assert.equals(for6.velocidadMax(), 60)
+	}
+
 }
+

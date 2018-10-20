@@ -1,71 +1,110 @@
-/** First Wollok example */
-import locomotora.*
+/** First Wollok example */ import locomotora.*
 import vagones.*
 
-class Formacion{
+class Formacion {
+
 	var vagones = []
 	var locomotoras = []
-	//var property esDeCorta = true
-	
-	
-	method cantVagonesLivianos(){
-		return vagones.count({vagon => vagon.esLiviano()})
+
+	method cantVagonesLivianos() {
+		return vagones.count({ vagon => vagon.esLiviano() })
 	}
-	
-	method velocidadMax(){
-		return (locomotoras.min({locomotora=>locomotora.velocidadMax()})).velocidadMax()
-	} 
-	
-	method esEficiente(){
-		return locomotoras.all({locomotora=>locomotora.arrastreUtil()>= locomotora.peso()*5})
+
+	method velocidadMax() {
+		return (locomotoras.min({ locomotora => locomotora.velocidadMax() })).velocidadMax()
 	}
-	method puedeMoverse(){
+
+	method esEficiente() {
+		return locomotoras.all({ locomotora => locomotora.arrastreUtil() >= locomotora.peso() * 5 })
+	}
+
+	method puedeMoverse() {
 		return self.arrastreUtilTotal() >= self.pesoTotalVagones()
-	}	
-	method pesoTotalLocomotoras(){
-		return locomotoras.sum ({locomotora=> locomotora.peso()})
 	}
-	method pesoTotalVagones(){
-		return vagones.sum ({vagon=> vagon.pesoMax()})
+
+	method pesoTotalLocomotoras() {
+		return locomotoras.sum({ locomotora => locomotora.peso() })
 	}
-	method arrastreUtilTotal(){
-		return locomotoras.sum ({locomotora=> locomotora.arrastreUtil()})
+
+	method pesoTotalVagones() {
+		return vagones.sum({ vagon => vagon.pesoMax() })
 	}
-	
-	method cuantosKilosDeEmpujeFaltan(){
-		return if(self.puedeMoverse()){
-					0
-				}else {
-					self.pesoTotalVagones()-self.arrastreUtilTotal()
-				}
+
+	method arrastreUtilTotal() {
+		return locomotoras.sum({ locomotora => locomotora.arrastreUtil() })
 	}
-	
-	method vagonMasPesado(){
-		return vagones.max({vagon=> vagon.pesoMax()})
+
+	method cuantosKilosDeEmpujeFaltan() {
+		return if (self.puedeMoverse()) {
+			0
+		} else {
+			self.pesoTotalVagones() - self.arrastreUtilTotal()
+		}
 	}
-	method esCompleja(){
-		return (vagones.size()+locomotoras.size()) >20 or  (self.pesoTotalLocomotoras()+self.pesoTotalVagones()) > 10000
-	}//buscarLocomotora(tren)
-	
-	method tieneMuchosBanios(){//IMPLEMENTAR
-		return vagones.size()>0 
+
+	method vagonMasPesado() {
+		return vagones.max({ vagon => vagon.pesoMax() })
 	}
- 	method estaBienArmada() {
-			return self.puedeMoverse() 
+
+	method esCompleja() {
+		return (vagones.size() + locomotoras.size()) > 20 or (self.pesoTotalLocomotoras() + self.pesoTotalVagones()) > 10000
 	}
-	/*method cantVagonesLivianos(){
-		return vagones.count({vagon=> vagon.peso()>2500})
-	} */
+
+	method estaBienArmada() {
+		return self.puedeMoverse()
+	}
+
+	method agregarLocomotora(locomotora) {
+		locomotoras.add(locomotora)
+	}
 }
-	
 class FormacionDeLargaDistancia inherits Formacion {
+
+	var property uneDosCiudadesGrandes
+
+	method tieneMuchosBanios() {
+		return vagones.all({ vagon => vagon.cantBaniosSuficientes() })
+	}
+
 	override method estaBienArmada() {
 		return super() and self.tieneMuchosBanios()
-	}	
-}
-	
-class FormacionDeCortaDistancia inherits Formacion {
-		override method estaBienArmada() {
-			return super() and !self.esCompleja()
 	}
-}	
+
+	override method velocidadMax() {
+		return if (uneDosCiudadesGrandes) {
+			200
+		} else {
+			150
+		}
+	}
+
+}
+
+
+class FormacionDeCortaDistancia inherits Formacion {
+
+	override method estaBienArmada() {
+		return super() and !self.esCompleja()
+	}
+	override method velocidadMax() {
+		return 60
+	}
+}
+
+class FormacionDeAltaVelocidad inherits FormacionDeLargaDistancia {
+
+	override method estaBienArmada() {
+		return super() and self.velocidadMax() >= 250 and self.sonTodosVagonesLivianos()
+	}
+	method sonTodosVagonesLivianos(){
+		return vagones.all({vagon=> vagon.esLiviano()})
+	}
+	override method velocidadMax() {
+		return 400
+	}
+	
+}
+
+
+
+
